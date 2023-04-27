@@ -1,0 +1,65 @@
+.main {
+  animation: fadeIn 3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.nav header {
+  display: inline;
+}
+
+.nav {
+  display: inline;
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+}
+
+.title {
+  text-align: center;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  margin: 0;
+  color: rgba(252, 163, 17, 1);
+}
+
+
+
+.list {
+  display: grid;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  gap: 3rem;
+  color: white;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.item1 {
+  grid-column-start: 1;
+  grid-column-end: 2;
+}
+
+.item2 {
+  grid-column-start: 2;
+  grid-column-end: 3;
+}
+
+.title {
+  text-align: center;
+}
+
+.nav a {
+  text-decoration: none;
+  color: rgba(252, 163, 17, 1);
+}
