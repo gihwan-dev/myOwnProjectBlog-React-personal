@@ -12,6 +12,7 @@
   }
 }
 
+
 .nav header {
   display: inline;
 }
@@ -50,10 +51,35 @@
   grid-column-end: 2;
 }
 
+.item1:hover {
+  color: rgba(252, 163, 17, 1);
+  transition: ease-in 0.5s;
+  cursor: pointer;
+}
+
+.item2:hover {
+  color: rgba(252, 163, 17, 1);
+  transition: ease-in 0.5s;
+  cursor: pointer;
+}
+
+.item3:hover {
+  color: rgba(252, 163, 17, 1);
+  transition: ease-in 0.5s;
+  cursor: pointer;
+}
+
+.item4:hover {
+  color: rgba(252, 163, 17, 1);
+  transition: ease-in 0.5s;
+  cursor: pointer;
+}
+
 .item2 {
   grid-column-start: 2;
   grid-column-end: 3;
 }
+
 
 .title {
   text-align: center;
