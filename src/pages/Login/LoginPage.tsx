@@ -34,7 +34,7 @@ const transitionStyles = {
 
 const LoginPage = () => {
   const nodeRef = useRef(null);
-  const navigateToAdmin = useNavigate();
+  const navigate = useNavigate();
   const [pinCode, setPinCode] = useState("");
   const [isValidPinCode, setIsValidPinCode] = useState(false);
   const [isChanged, setIsChanged] = useState(false);
@@ -53,12 +53,16 @@ const LoginPage = () => {
     if (value === "123456") {
       setIsValidPinCode(true);
       setPinCode(value);
+      setInProp(false);
+      setTimeout(() => {
+        navigate("/user");
+      }, 500);
     } else if (value === "000000") {
       setIsValidPinCode(true);
       setPinCode(value);
       setInProp(false);
       setTimeout(() => {
-        navigateToAdmin("/admin");
+        navigate("/admin");
       }, 500);
     } else {
       setIsValidPinCode(false);
