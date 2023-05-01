@@ -1,0 +1,23 @@
+.item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 1
+}
+
+.item p {
+  margin: 0;
+}
+
+.text {
+  margin-left: 10px;
+}
+
+.amount {
+  color: white;
+  font-size: 26px;
+}
+
+.title {
+  color: rgba(143, 143, 143, 1);
+}

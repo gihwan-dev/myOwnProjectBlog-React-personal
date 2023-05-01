@@ -1,0 +1,33 @@
+.item {
+  width: 30vw;
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+.date {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.text {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.progressBar {
+  animation: progress 1s ease-in-out;
+}
+
+@keyframes progress {
+  0% {
+    width: 0%;
+  }
+
+  100% {
+    width: 100%;
+  }
+}

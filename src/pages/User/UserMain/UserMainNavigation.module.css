@@ -1,9 +1,14 @@
 .header {
   display: flex;
   color: white;
-  margin-left: 5%;
+  padding-left: 30px;
   align-items: center;
   height: 10vh;
+  border-bottom: 1px solid white;
+}
+
+.header nav {
+  animation: fadeIn 1s ease-in-out;
 }
 
 .header ul {
@@ -43,4 +48,36 @@
 
 .header h1:hover {
   cursor: pointer
+}
+
+a.active {
+  color: rgba(252, 163, 17, 1);
+}
+
+a:hover {
+  color: rgba(252, 163, 17, 1);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.header h1 {
+  animation: fall 2s ease-in-out;
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(-100px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
 }

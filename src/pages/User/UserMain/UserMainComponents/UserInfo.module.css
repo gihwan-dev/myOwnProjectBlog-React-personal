@@ -1,0 +1,33 @@
+.user-info {
+  margin-top: 30px;
+  padding-left: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.detail {
+  margin-left: 1rem;
+}
+
+.image {
+  border-radius: 100%;
+}
+
+.name {
+  font-size: 24px;
+  color: white;
+  margin: 0;
+
+}
+
+.job {
+  font-size: 16px;
+  margin-top: 5px;
+  color: rgba(172, 172, 172, 1);
+}
+
+.total-info {
+  display: flex;
+  flex-direction: column;
+  width: 25vw;
+}

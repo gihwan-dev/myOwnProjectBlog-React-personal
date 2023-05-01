@@ -1,0 +1,25 @@
+.nav li {
+  display: inline;
+  text-decoration: none;
+  list-style: none;
+  font-size: 24px;
+  margin: 1rem;
+  color: rgba(182, 182, 182, 1);
+}
+
+.nav ul {
+  margin: 0;
+  padding: 0;
+  margin-top: 1rem;
+  margin-left: 1rem;
+  margin-bottom: 1rem;
+}
+
+.nav li:hover {
+  color: black;
+  cursor: pointer;
+}
+
+.active {
+  color: black !important;
+}

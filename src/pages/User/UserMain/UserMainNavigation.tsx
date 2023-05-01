@@ -14,15 +14,32 @@ const UserMainNavigation = () => {
           <li>
             <NavLink
               to="/user"
+              className={({ isActive }) => {
+                return isActive ? styles.active : undefined;
+              }}
               end
             >
               Overview
             </NavLink>
             <li>
-              <NavLink to="/user">Calender</NavLink>
+              <NavLink
+                to="/user/calender"
+                className={({ isActive }) => {
+                  return isActive ? styles.active : undefined;
+                }}
+              >
+                Calender
+              </NavLink>
             </li>
             <li>
-              <NavLink to="/user">References</NavLink>
+              <NavLink
+                to="/user/ref"
+                className={({ isActive }) => {
+                  return isActive ? styles.active : undefined;
+                }}
+              >
+                References
+              </NavLink>
             </li>
           </li>
         </ul>

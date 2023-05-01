@@ -1,6 +1,6 @@
 .page {
   animation: fadeIn 1s ease-in-out;
-  background-color: white;
+  background-color: rgba(235, 235, 235, 1);
   height: 90vh;
 }
 
@@ -13,4 +13,10 @@
   100% {
     opacity: 1;
   }
+}
+
+.info {
+  background-color: rgba(34, 34, 34, 1);
+  display: flex;
+  justify-content: space-between;
 }
