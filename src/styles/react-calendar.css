@@ -1,0 +1,10 @@
+.react-calendar {
+  width: 60vw;
+  height: 60vh;
+  margin-top: 1rem;
+  border-radius: 20px;
+}
+
+.react-calendar__tile {
+  line-height: 7vh;
+}

@@ -1,0 +1,37 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 10vh;
+}
+
+
+.list {
+  margin: 0;
+  margin-left: 2rem;
+  height: 60vh;
+  z-index: 10;
+  color: white;
+  overflow-y: scroll;
+}
+
+.list::-webkit-scrollbar {
+  display: none;
+}
+
+.list li {
+  margin-right: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding: 2rem;
+  border: none;
+  background-color: white;
+  list-style: none;
+  color: black;
+  border-radius: 20px;
+  box-shadow: 2px 3px 10px 0px rgb(0, 0, 0);
+}
+
+.list li:hover {
+  transform: scale(1.05);
+}

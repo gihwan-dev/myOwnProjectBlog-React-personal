@@ -154,9 +154,15 @@ const ContentList: React.FC<{
       break;
   }
   return (
-    <div className={styles.main}>
-      <ul className={styles.list}>{content}</ul>
-    </div>
+    <>
+      <div className={styles.bar}>
+        <p>항목</p>
+        <button>추가하기</button>
+      </div>
+      <div className={styles.main}>
+        <ul className={styles.list}>{content}</ul>
+      </div>
+    </>
   );
 };
 
