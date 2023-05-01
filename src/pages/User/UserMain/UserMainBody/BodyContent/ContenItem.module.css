@@ -31,3 +31,18 @@
     width: 100%;
   }
 }
+
+.title {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.amount {
+  background-color: rgba(217, 217, 217, 1);
+  padding: 0.3rem 1rem;
+  border-radius: 20px;
+}
+
+.date {
+  color: rgb(111, 111, 111);
+}

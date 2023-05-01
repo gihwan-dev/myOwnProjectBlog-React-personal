@@ -1,4 +1,3 @@
-import image from "../../../../assets/images/profile.jpg";
 import styles from "./UserInfo.module.css";
 import UserMainProgress from "./UserMainProgress";
 
@@ -8,7 +7,7 @@ const UserInfo = () => {
       <div className={styles["user-info"]}>
         <img
           className={styles.image}
-          src={image}
+          src="assets/images/profile1.jpg"
           width="80"
           height="80"
           alt="profile"

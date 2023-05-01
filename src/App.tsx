@@ -5,6 +5,7 @@ import AdminMainPage from "./pages/Admin/AdminMainPage";
 import AddProjectPage from "./pages/Admin/AddProjectPage";
 import UserMain from "./pages/User/UserMain/UserMain";
 import UserRootLayout from "./pages/User/UserMain/UserRootLayout";
+import UserCalender from "./pages/User/UserCalender/UserCalender";
 
 const router = createBrowserRouter([
   { path: "/", element: <LoginPage /> },
@@ -15,7 +16,10 @@ const router = createBrowserRouter([
   {
     path: "/user",
     element: <UserRootLayout />,
-    children: [{ index: true, element: <UserMain /> }],
+    children: [
+      { index: true, element: <UserMain /> },
+      { path: "calender", element: <UserCalender /> },
+    ],
   },
 ]);
 

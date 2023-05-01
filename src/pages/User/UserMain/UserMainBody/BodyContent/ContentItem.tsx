@@ -11,8 +11,8 @@ const ContentItem: React.FC<{
   return (
     <div className={styles.item}>
       <div className={styles.text}>
-        <p>{props.title}</p>
-        <p>
+        <p className={styles.title}>{props.title}</p>
+        <p className={styles.amount}>
           {props.done}/{props.total}
         </p>
       </div>
