@@ -1,0 +1,59 @@
+@import url(https://fonts.googleapis.com/css?family=Bree+Serif);
+
+$timing-fn: ease;
+$turquoise: #1abc9c;
+$wet-asphalt: #34495e;
+$midnight-blue: #2c3e50;
+$clouds: #ecf0f1;
+
+.container {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 70vh;
+  margin-top: 10vh;
+  width: 80vw;
+  border-radius: 20px;
+  box-shadow: 3px 4px 1px 1px rgb(159, 159, 159);
+  overflow: scroll;
+
+  h1 {
+    color: white;
+    font-family: "Bree Serif", serif;
+    color: $wet-asphalt;
+    margin-bottom: 0;
+    margin-top: 2rem;
+  }
+
+  p {
+    margin-top: 0;
+    margin-bottom: 2rem;
+    color: transparentize($color: $wet-asphalt, $amount: 0.6);
+  }
+}
+
+.container::-webkit-scrollbar {
+  display: none;
+}
+
+.button {
+  position: absolute;
+  top: 85%;
+  left: 85%;
+  background-color: rgb(187, 187, 187);
+  border: none;
+  padding: 1rem 2.5rem;
+  border-radius: 20px;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.button:hover {
+  cursor: pointer;
+  transform: scale(1.05);
+}
