@@ -10,7 +10,8 @@ interface ListItem {
 
 const ReferencesItem: React.FC<{
   listData: ListItem[];
-}> = ({ listData }) => {
+  delete: (index: number) => void;
+}> = (props) => {
   const listItemsRef = useRef<(HTMLLIElement | null)[]>([]);
 
   const directions: Record<number, string> = useMemo(() => {
@@ -51,6 +52,10 @@ const ReferencesItem: React.FC<{
     update(ev, "out", index);
   };
 
+  const deleteHandler = (index: number) => {
+    props.delete(index);
+  };
+
   return (
     <>
       <header className={styles.header}>
@@ -58,8 +63,9 @@ const ReferencesItem: React.FC<{
       </header>
       <div className={styles.container}>
         <ul className={styles.list}>
-          {listData.map((item, index) => (
+          {props.listData.map((item, index) => (
             <li
+              draggable={true}
               className={styles.item}
               key={index}
               onMouseOver={(event) => mouseOverHandler(event, index)}
@@ -69,21 +75,54 @@ const ReferencesItem: React.FC<{
               <a
                 href={item.url}
                 className={styles.normal}
+                target="_blank"
+                rel="noreferrer"
               >
                 <svg
-                  viewBox="0 0 80 76"
+                  version="1.1"
+                  id="L1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlnsXlink="http://www.w3.org/1999/xlink"
                   x="0px"
                   y="0px"
+                  viewBox="0 0 100 100"
+                  enable-background="new 0 0 100 100"
+                  xmlSpace="preserve"
                 >
-                  <g>
-                    <path d="M 68.9708 24.8623 L 60.4554 2.3018 C 59.9641 0.7017 58.1628 -0.2583 56.5252 0.3817 L 1.9822 20.2222 C 0.3822 20.7022 -0.4179 22.6222 0.2222 24.2223 L 8.8624 47.7797 L 8.8624 35.1484 C 8.8624 29.5024 13.3425 24.8623 18.8857 24.8623 L 32.9442 24.8623 L 50.63 12.862 L 60.7829 24.8623 L 68.9708 24.8623 L 68.9708 24.8623 ZM 77.098 32.0625 L 18.8857 32.0625 C 17.2512 32.0625 16.0625 33.4511 16.0625 35.1484 L 16.0625 72.8491 C 16.0625 74.5477 17.2512 75.9375 18.8857 75.9375 L 77.098 75.9375 C 78.742 75.9375 79.9376 74.5477 79.9376 72.8491 L 79.9376 35.1484 C 79.9376 33.4511 78.742 32.0625 77.098 32.0625 L 77.098 32.0625 ZM 73.0626 68.0625 L 23.9375 68.0625 L 23.9375 61.0852 L 31.4704 43.7232 L 42.7696 57.6777 L 53.4138 46.8062 L 67.1695 41.9375 L 73.0626 55.0815 L 73.0626 68.0625 L 73.0626 68.0625 Z" />
-                  </g>
+                  <circle
+                    fill="none"
+                    stroke="#fff"
+                    stroke-width="6"
+                    stroke-miterlimit="15"
+                    stroke-dasharray="14.2472,14.2472"
+                    cx="50"
+                    cy="50"
+                    r="47"
+                  >
+                    <animateTransform
+                      attributeName="transform"
+                      attributeType="XML"
+                      type="rotate"
+                      dur="5s"
+                      from="0 50 50"
+                      to="360 50 50"
+                      repeatCount="indefinite"
+                    />
+                  </circle>
                 </svg>
               </a>
               <div className={styles.info}>
-                <h3>{item.title}</h3>
-                <p>{item.description}</p>
+                <div>
+                  <h3>{item.title}</h3>
+                  <p>{item.description}</p>
+                </div>
               </div>
+              <p
+                className={styles.delete}
+                onClick={deleteHandler.bind(null, index)}
+              >
+                제거
+              </p>
             </li>
           ))}
         </ul>

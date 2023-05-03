@@ -3,10 +3,11 @@ $timing-fn: ease;
 $turquoise: #1abc9c;
 $wet-asphalt: #34495e;
 $midnight-blue: #2c3e50;
-$clouds: #ecf0f1;
+$clouds: #49d9fc;
 
 .item {
   perspective: 400px;
+  z-index: 0;
 }
 
 .info {
@@ -22,6 +23,9 @@ $clouds: #ecf0f1;
   pointer-events: none;
   background-color: transparentize($turquoise, 0.1);
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .in-top .info {
@@ -39,6 +43,32 @@ $clouds: #ecf0f1;
 .in-left .info {
   transform-origin: 0% 0%;
   animation: in-left $duration $timing-fn 0ms 1 forwards;
+}
+
+.item a {
+  z-index: 0 !important;
+}
+
+.delete {
+  position: absolute;
+  right: 50%;
+  top: calc(200px - 1.9rem);
+  left: 55%;
+  transform: translateX(50%);
+  display: inline-block;
+  background-color: #f38080;
+  width: 30%;
+  font-size: 1rem !important;
+  color: white !important;
+  text-align: center;
+  padding: 0.2rem 0;
+  border-radius: 5px;
+  z-index: 100 !important;
+}
+
+.delete:hover {
+  cursor: pointer;
+  background-color: #fd5757;
 }
 
 .out-top .info {
@@ -127,6 +157,9 @@ $clouds: #ecf0f1;
 .list {
   padding: 0;
   margin: 0 0 50px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 
   &:after {
     content: "";
@@ -148,6 +181,7 @@ $clouds: #ecf0f1;
     vertical-align: top;
     text-decoration: none;
     border-radius: 4px;
+    z-index: 10;
   }
   h3 {
     margin: 0;

@@ -1,4 +1,6 @@
+import { useState } from "react";
 import ReferencesItem from "../ReferencesItem/ReferencesItem";
+import RefDialog from "../refDialog/refDialog";
 import styles from "./ReferencesList.module.scss";
 
 interface ListItem {
@@ -7,28 +9,35 @@ interface ListItem {
   url: string;
 }
 
-const listData: ListItem[] = [
-  {
-    title: "Title 1",
-    description: "Description 1",
-    url: "#",
-  },
-  {
-    title: "Title 2",
-    description: "Description 2",
-    url: "#",
-  },
-  {
-    title: "Title 3",
-    description: "Description 3",
-    url: "#",
-  },
-];
+const ReferencesList: React.FC<{
+  open: boolean;
+  onClose: () => void;
+}> = (props) => {
+  const [listData, setListData] = useState<ListItem[]>([]);
 
-const ReferencesList = () => {
+  const onSaved = (title: string, description: string, url: string) => {
+    setListData((prevListData) => {
+      return prevListData.concat([{ title, description, url }]);
+    });
+  };
+
+  const deleteHandler = (index: number) => {
+    setListData((prevListData) => {
+      return prevListData.filter((_, i) => i !== index);
+    });
+  };
+
   return (
     <div className={styles.container}>
-      <ReferencesItem listData={listData} />
+      <RefDialog
+        open={props.open}
+        close={props.onClose}
+        onSave={onSaved}
+      />
+      <ReferencesItem
+        listData={listData}
+        delete={deleteHandler}
+      />
     </div>
   );
 };
