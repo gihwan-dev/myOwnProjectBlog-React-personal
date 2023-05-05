@@ -1,9 +1,15 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import styles from "./UserMainNavigation.module.css";
 
+import { useAppDispatch } from "../../app/hook";
+import { userActions } from "../../../store/user";
+
 const UserMainNavigation = () => {
+  const dispatch = useAppDispatch();
+
   const navigate = useNavigate();
   const titleClickHandler = () => {
+    dispatch(userActions.logout());
     navigate("/");
   };
   return (

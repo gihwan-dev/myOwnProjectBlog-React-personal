@@ -1,8 +1,11 @@
-import { useState, useRef, CSSProperties } from "react";
+import { useState, useRef } from "react";
 import PinInput from "react-pin-input";
 import styles from "./LoginPage.module.css";
 import { useNavigate } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
+import { useAppDispatch } from "../app/hook";
+
+import { userListActions } from "../../store/users";
 
 const INVALID_INPUT_STYLE = {
   border: "none",
@@ -39,40 +42,53 @@ const LoginPage = () => {
   const [isValidPinCode, setIsValidPinCode] = useState(false);
   const [isChanged, setIsChanged] = useState(false);
   const [inProp, setInProp] = useState(true);
-  console.log(inProp);
+
+  const dispatch = useAppDispatch();
 
   const isChangedHandler = () => {
     setIsChanged(true);
     setIsValidPinCode(true);
   };
 
-  const pinCodeCompleteHandler = (value: string) => {
+  const pinCodeCompleteHandler = async (value: string) => {
     setPinCode(value);
     // fetch the data and valitate this pin code.
+    const result = await fetch("http://localhost:8080/project/auth", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        code: pinCode,
+      }),
+    });
 
-    if (value === "123456") {
+    if (value === "000000") {
       setIsValidPinCode(true);
-      setPinCode(value);
-      setInProp(false);
-      setTimeout(() => {
-        navigate("/user");
-      }, 500);
-    } else if (value === "000000") {
-      setIsValidPinCode(true);
-      setPinCode(value);
       setInProp(false);
       setTimeout(() => {
         navigate("/admin");
       }, 500);
+      return;
+    }
+
+    if (result.status === 200) {
+      const data = (await result.json()) as {
+        users: { name: string; job: string; _id: string }[];
+      };
+      console.log(data.users);
+      const updatedUsers = data.users.map((user) => {
+        return { name: user.name, job: user.job, isLoged: false };
+      });
+      dispatch(userListActions.setUserList({ userList: updatedUsers }));
+      setIsValidPinCode(true);
+      setInProp(false);
+      setTimeout(() => {
+        navigate("/user");
+      }, 500);
     } else {
       setIsValidPinCode(false);
     }
-
-    // if not validate code
-    if (!isValidPinCode) {
-    }
-
-    // validate code
   };
 
   const inputStyle =

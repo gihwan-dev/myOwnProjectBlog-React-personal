@@ -1,7 +1,10 @@
 import styles from "./UserInfo.module.css";
 import UserMainProgress from "./UserMainProgress";
 
-const UserInfo = () => {
+const UserInfo: React.FC<{
+  name: string;
+  job: string;
+}> = (props) => {
   return (
     <div className={styles["total-info"]}>
       <div className={styles["user-info"]}>
@@ -13,8 +16,8 @@ const UserInfo = () => {
           alt="profile"
         />
         <div className={styles.detail}>
-          <p className={styles.name}>홍길동</p>
-          <p className={styles.job}>백엔드 개발</p>
+          <p className={styles.name}>{props.name}</p>
+          <p className={styles.job}>{props.job}</p>
         </div>
       </div>
       <UserMainProgress />

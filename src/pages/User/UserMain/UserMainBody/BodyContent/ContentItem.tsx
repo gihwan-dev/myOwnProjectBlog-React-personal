@@ -1,5 +1,6 @@
 import { LinearProgress } from "@mui/material";
 import styles from "./ContenItem.module.css";
+import { createSearchParams, useNavigate } from "react-router-dom";
 
 const ContentItem: React.FC<{
   title: string;
@@ -8,8 +9,26 @@ const ContentItem: React.FC<{
   startDate: string;
   endDate: string;
 }> = (props) => {
+  const navigate = useNavigate();
+
+  const onClickHandler = () => {
+    navigate({
+      pathname: "/user/detail",
+      search: createSearchParams({
+        title: props.title,
+        done: props.done.toString(),
+        total: props.total.toString(),
+        startDate: props.startDate,
+        endDate: props.endDate,
+      }).toString(),
+    });
+  };
+
   return (
-    <div className={styles.item}>
+    <div
+      className={styles.item}
+      onClick={onClickHandler}
+    >
       <div className={styles.text}>
         <p className={styles.title}>{props.title}</p>
         <p className={styles.amount}>
