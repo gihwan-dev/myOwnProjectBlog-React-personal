@@ -7,6 +7,8 @@ import { useAppDispatch } from "../app/hook";
 
 import { userListActions } from "../../store/users";
 
+import { projectActions } from "../../store/project";
+
 const INVALID_INPUT_STYLE = {
   border: "none",
   borderBottom: "1px solid red",
@@ -38,7 +40,6 @@ const transitionStyles = {
 const LoginPage = () => {
   const nodeRef = useRef(null);
   const navigate = useNavigate();
-  const [pinCode, setPinCode] = useState("");
   const [isValidPinCode, setIsValidPinCode] = useState(false);
   const [isChanged, setIsChanged] = useState(false);
   const [inProp, setInProp] = useState(true);
@@ -51,7 +52,6 @@ const LoginPage = () => {
   };
 
   const pinCodeCompleteHandler = async (value: string) => {
-    setPinCode(value);
     // fetch the data and valitate this pin code.
     const result = await fetch("http://localhost:8080/project/auth", {
       method: "POST",
@@ -59,7 +59,7 @@ const LoginPage = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        code: pinCode,
+        code: value.trim(),
       }),
     });
 
@@ -75,12 +75,23 @@ const LoginPage = () => {
     if (result.status === 200) {
       const data = (await result.json()) as {
         users: { name: string; job: string; _id: string }[];
+        _id: string;
       };
-      console.log(data.users);
       const updatedUsers = data.users.map((user) => {
         return { name: user.name, job: user.job, isLoged: false };
       });
+
       dispatch(userListActions.setUserList({ userList: updatedUsers }));
+      dispatch(projectActions.setProject({ _id: data._id }));
+      if (localStorage.getItem("projectId") !== null) {
+        localStorage.removeItem("projectId");
+      }
+      localStorage.setItem("projectId", data._id);
+
+      setTimeout(() => {
+        localStorage.removeItem("projectId");
+      }, 1 * 10 * 60 * 60 * 1000);
+
       setIsValidPinCode(true);
       setInProp(false);
       setTimeout(() => {

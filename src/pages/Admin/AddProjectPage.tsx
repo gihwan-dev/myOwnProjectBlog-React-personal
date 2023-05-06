@@ -12,6 +12,7 @@ const AddProjectPage: React.FC<{
 }> = (props) => {
   const [users, setUsers] = useState<User[]>([{ name: "", job: "" }]);
   const [code, setCode] = useState("");
+  const [title, setTitle] = useState("");
 
   async function onSubmitHandler(event: React.FormEvent<HTMLFormElement>) {
     props.onSubmit();
@@ -25,6 +26,7 @@ const AddProjectPage: React.FC<{
         body: JSON.stringify({
           users: users,
           code: code,
+          title: title,
         }),
       });
 
@@ -42,6 +44,10 @@ const AddProjectPage: React.FC<{
 
   const codeChangeHandler = (event: FormEvent<HTMLInputElement>) => {
     setCode(event.currentTarget.value);
+  };
+
+  const titleChangeHandler = (event: FormEvent<HTMLInputElement>) => {
+    setTitle(event.currentTarget.value);
   };
 
   function onCancelHandler() {
@@ -101,21 +107,37 @@ const AddProjectPage: React.FC<{
             maxLength={6}
           />
         </div>
+        <div className={styles.form}>
+          <label htmlFor="project-title">프로젝트 명</label>
+          <input
+            value={title}
+            type="text"
+            onChange={titleChangeHandler}
+          />
+        </div>
+
         <div>
-          <label htmlFor="add-user">프로젝트 멤버 추가</label>
+          <div className={styles.form}>
+            <label htmlFor="add-user">프로젝트 멤버 추가</label>
+          </div>
           {users.map((user, index) => {
             return (
-              <div key={index}>
-                <input
-                  value={user.name}
-                  placeholder="이름"
-                  onChange={(event) => userNameHandler(event, index)}
-                />
-                <input
-                  value={user.job}
-                  placeholder="직업"
-                  onChange={(event) => userJobHandler(event, index)}
-                />
+              <div
+                key={index}
+                className={styles["add-member"]}
+              >
+                <div className={styles["add-member-input"]}>
+                  <input
+                    value={user.name}
+                    placeholder="이름"
+                    onChange={(event) => userNameHandler(event, index)}
+                  />
+                  <input
+                    value={user.job}
+                    placeholder="직업"
+                    onChange={(event) => userJobHandler(event, index)}
+                  />
+                </div>
                 <button
                   type="button"
                   onClick={userRemoveHandler.bind(null, index)}
@@ -128,6 +150,7 @@ const AddProjectPage: React.FC<{
           <button
             type="button"
             onClick={userAddHandler}
+            className={styles["add-btn"]}
           >
             +
           </button>

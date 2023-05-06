@@ -4,8 +4,14 @@ import userReducer from "./user";
 
 import userListReducer from "./users";
 
+import projectReducer from "./project";
+
 const store = configureStore({
-  reducer: { user: userReducer, userList: userListReducer },
+  reducer: {
+    user: userReducer,
+    userList: userListReducer,
+    project: projectReducer,
+  },
 });
 
 export default store;

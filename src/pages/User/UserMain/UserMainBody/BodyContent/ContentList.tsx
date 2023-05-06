@@ -1,6 +1,8 @@
 import ContentItem from "./ContentItem";
 import styles from "./ContentList.module.css";
 
+// useEffect로 데이터 가져와서 redux store에 저장 이후 업데이트 할 때 마다 다시 가져오는 방식.
+
 const TODO_DUMMY_DATA = [
   {
     title: "UX Design",
