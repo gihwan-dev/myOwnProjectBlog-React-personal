@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import styles from "./UserCalender.module.css";
@@ -7,6 +7,7 @@ import ScheduleTime from "./ScheduleTime";
 import Modal from "../../../UI/Modal";
 
 type MeetingData = {
+  _id: string;
   date: Date;
   time: string;
   content: string;
@@ -26,22 +27,88 @@ const UserCalender = () => {
     setOpenModal(false);
   };
 
-  const deleteDateHandler = (index: number) => {
+  const getMeetings = useCallback(async () => {
+    const _id = localStorage.getItem("projectId");
+    try {
+      const res = await fetch(`http://localhost:8080/project/meeting/${_id}`);
+      if (res.status === 200) {
+        const data = (await res.json()) as {
+          meetings: {
+            _id: string;
+            date: string;
+            time: string;
+            content: string;
+          }[];
+        };
+        const updatedMeetings = data.meetings.map((meeting) => {
+          return {
+            date: new Date(meeting.date),
+            time: meeting.time,
+            content: meeting.content,
+            _id: meeting._id,
+          };
+        });
+
+        updatedMeetings.sort((a, b) => {
+          return a.date.getTime() - b.date.getTime();
+        });
+
+        setDateList(updatedMeetings);
+      }
+    } catch (error) {}
+  }, []);
+
+  const deleteDateHandler = async (index: number) => {
     if (dateList && dateList.length >= 1) {
-      setDateList((prev) => {
-        return prev?.filter((_, idx) => idx !== index);
-      });
+      const _id = localStorage.getItem("projectId");
+      const res = await fetch(
+        `http://localhost:8080/project/meeting/${dateList[index]._id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            _id,
+          }),
+        }
+      );
+      if (res.status === 200) {
+        window.alert("삭제되었습니다.");
+      } else {
+        window.alert("삭제에 실패했습니다.");
+      }
     }
+    getMeetings();
   };
 
-  const onSaved = (time: string, content: string) => {
-    console.log(value.getDate());
-    if (dateList && dateList.length >= 1) {
-      setDateList((prev) => {
-        return prev?.concat([{ date: value, time: time, content: content }]);
+  useEffect(() => {
+    getMeetings();
+  }, []);
+
+  const onSaved = async (time: string, content: string) => {
+    const _id = localStorage.getItem("projectId");
+    const date = value.toISOString();
+    try {
+      const res = await fetch("http://localhost:8080/project/meeting", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          _id,
+          date,
+          time,
+          content,
+        }),
       });
-    } else {
-      setDateList([{ date: value, time: time, content: content }]);
+      if (res.status === 200) {
+        const data = await res.json();
+        window.alert(data.message);
+        getMeetings();
+      }
+    } catch (error) {
+      window.alert("저장에 실패했습니다.");
     }
     setOpenModal(false);
   };
