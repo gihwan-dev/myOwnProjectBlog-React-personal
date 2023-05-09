@@ -47,3 +47,15 @@
 .date {
   color: rgb(111, 111, 111);
 }
+
+.close {
+  border: none;
+  font-size: 1rem;
+  padding: 0.5rem 0;
+  font-weight: 600;
+}
+
+.close:hover {
+  cursor: pointer;
+  background-color: rgb(111, 111, 111)
+}

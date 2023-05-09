@@ -6,6 +6,7 @@ import WeekInfo from "./UserMainComponents/WeekInfo";
 import SelectUserPage from "./UserMainLogin/SelectUserPage";
 import { useAppSelector, useAppDispatch } from "../../app/hook";
 import { userActions } from "../../../store/user";
+import { useEffect } from "react";
 
 type User = {
   name: string;
@@ -27,7 +28,20 @@ const UserMain = () => {
 
   const onSelectHandler = (user: User) => {
     dispatch(userActions.login(user));
+    localStorage.setItem("userName", user.name);
+    localStorage.setItem("userJob", user.job);
   };
+
+  useEffect(() => {
+    if (localStorage.getItem("userName") !== null) {
+      const savedUser = {
+        name: localStorage.getItem("userName")!,
+        job: localStorage.getItem("userJob")!,
+      };
+
+      dispatch(userActions.login(savedUser));
+    }
+  }, []);
 
   const content = isLoged ? (
     <div className={styles.page}>

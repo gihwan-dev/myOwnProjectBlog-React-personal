@@ -6,11 +6,14 @@ import userListReducer from "./users";
 
 import projectReducer from "./project";
 
+import totalListReducer from "./todoList";
+
 const store = configureStore({
   reducer: {
     user: userReducer,
     userList: userListReducer,
     project: projectReducer,
+    totalList: totalListReducer,
   },
 });
 

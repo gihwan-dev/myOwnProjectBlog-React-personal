@@ -6,7 +6,6 @@ import UserMain from "./pages/User/UserMain/UserMain";
 import UserRootLayout from "./pages/User/UserMain/UserRootLayout";
 import UserCalender from "./pages/User/UserCalender/UserCalender";
 import UserReferencesRootLayout from "./pages/User/UserReferences/UserReferencesRootLayout";
-import ToDoDetailLayout from "./pages/User/TodoDetail/ToDoDetailLayout";
 
 const router = createBrowserRouter([
   { path: "/", element: <LoginPage /> },
@@ -21,7 +20,6 @@ const router = createBrowserRouter([
       { index: true, element: <UserMain /> },
       { path: "calender", element: <UserCalender /> },
       { path: "ref", element: <UserReferencesRootLayout /> },
-      { path: "detail", element: <ToDoDetailLayout /> },
     ],
   },
 ]);

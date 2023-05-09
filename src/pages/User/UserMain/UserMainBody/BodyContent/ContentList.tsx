@@ -1,165 +1,132 @@
+import { Dialog } from "@mui/material";
 import ContentItem from "./ContentItem";
 import styles from "./ContentList.module.css";
+import ContentAddModal from "./contentAddModal/ContentAddModal";
+import { useCallback, useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../../../app/hook";
+
+import { totalListActions } from "../../../../../store/todoList";
 
 // useEffect로 데이터 가져와서 redux store에 저장 이후 업데이트 할 때 마다 다시 가져오는 방식.
-
-const TODO_DUMMY_DATA = [
-  {
-    title: "UX Design",
-    done: 0,
-    total: 12,
-    startDate: "2021-10-01",
-    endDate: "2021-10-31",
-  },
-  {
-    title: "UI Design",
-    done: 0,
-    total: 19,
-    startDate: "2021-09-01",
-    endDate: "2021-11-31",
-  },
-  {
-    title: "Frontend",
-    done: 0,
-    total: 10,
-    startDate: "2022-01-01",
-    endDate: "2022-02-31",
-  },
-  {
-    title: "Backend",
-    done: 0,
-    total: 5,
-    startDate: "2022-02-01",
-    endDate: "2022-03-31",
-  },
-  {
-    title: "Publishing",
-    done: 0,
-    total: 5,
-    startDate: "2021-10-01",
-    endDate: "2021-10-31",
-  },
-  {
-    title: "Marketing",
-    done: 0,
-    total: 5,
-    startDate: "2023-3-01",
-    endDate: "2023-4-31",
-  },
-];
-
-const DOING_DUMMY_DATA = [
-  {
-    title: "밥먹기",
-    done: 6,
-    total: 12,
-    startDate: "2021-10-01",
-    endDate: "2021-10-31",
-  },
-  {
-    title: "잠자기",
-    done: 12,
-    total: 19,
-    startDate: "2021-09-01",
-    endDate: "2021-11-31",
-  },
-  {
-    title: "씻기",
-    done: 2,
-    total: 10,
-    startDate: "2022-01-01",
-    endDate: "2022-02-31",
-  },
-  {
-    title: "운동가기",
-    done: 1,
-    total: 5,
-    startDate: "2022-02-01",
-    endDate: "2022-03-31",
-  },
-];
-
-const DONE_DUMMY_DATA = [
-  {
-    title: "학교가기",
-    done: 6,
-    total: 12,
-    startDate: "2021-10-01",
-    endDate: "2021-10-31",
-  },
-  {
-    title: "안죽기",
-    done: 12,
-    total: 19,
-    startDate: "2021-09-01",
-    endDate: "2021-11-31",
-  },
-  {
-    title: "살기",
-    done: 2,
-    total: 10,
-    startDate: "2022-01-01",
-    endDate: "2022-02-31",
-  },
-];
 
 const ContentList: React.FC<{
   type: string;
 }> = (props) => {
+  const [modalOpen, setModalOpen] = useState(false);
+  const todoList = useAppSelector((state) => state.totalList.todo);
+  const doingList = useAppSelector((state) => state.totalList.doing);
+  const doneList = useAppSelector((state) => state.totalList.done);
+
+  const dispatch = useAppDispatch();
+
   let content;
+
+  const getList = useCallback(async () => {
+    const _id = localStorage.getItem("projectId");
+    const response = await fetch(
+      `http://localhost:8080/project/totalList/${_id}`
+    );
+    const data = await response.json();
+
+    dispatch(
+      totalListActions.setTotalList({
+        todo: data.todo,
+        doing: data.doing,
+        done: data.done,
+      })
+    );
+  }, []);
+
+  useEffect(() => {
+    getList();
+  }, []);
 
   switch (props.type) {
     case "Todo":
-      content = TODO_DUMMY_DATA.map((item) => {
+      content = todoList.map((item) => {
+        const count = item.list.reduce(
+          (acc, cur) => (cur.done ? acc + 1 : acc + 0),
+          0
+        );
         return (
           <li key={item.title}>
             <ContentItem
+              _id={item._id}
               title={item.title}
-              done={item.done}
-              total={item.total}
-              startDate={item.startDate}
-              endDate={item.endDate}
+              done={count}
+              total={item.list.length}
+              startDate={item.start}
+              endDate={item.end}
+              type="Todo"
             />
           </li>
         );
       });
       break;
     case "Doing":
-      content = DOING_DUMMY_DATA.map((item) => {
+      content = doingList.map((item) => {
+        const count = item.list.reduce(
+          (acc, cur) => (cur.done ? acc + 1 : acc + 0),
+          0
+        );
         return (
           <li key={item.title}>
             <ContentItem
+              _id={item._id}
               title={item.title}
-              done={item.done}
-              total={item.total}
-              startDate={item.startDate}
-              endDate={item.endDate}
+              done={count}
+              total={item.list.length}
+              startDate={item.start}
+              endDate={item.end}
+              type="Doing"
             />
           </li>
         );
       });
       break;
     case "Done":
-      content = DONE_DUMMY_DATA.map((item) => {
+      content = doneList.map((item) => {
+        const count = item.list.reduce(
+          (acc, cur) => (cur.done ? acc + 1 : acc + 0),
+          0
+        );
         return (
           <li key={item.title}>
             <ContentItem
+              _id={item._id}
               title={item.title}
-              done={item.done}
-              total={item.total}
-              startDate={item.startDate}
-              endDate={item.endDate}
+              done={count}
+              total={item.list.length}
+              startDate={item.start}
+              endDate={item.end}
+              type="Done"
             />
           </li>
         );
       });
       break;
   }
+
+  const modalCloseHandler = () => {
+    setModalOpen(false);
+  };
+
+  const modalOpenHandler = () => {
+    setModalOpen(true);
+  };
+
   return (
     <>
+      <Dialog open={modalOpen}>
+        <ContentAddModal
+          getList={getList}
+          type={props.type}
+          onClose={modalCloseHandler}
+        />
+      </Dialog>
       <div className={styles.bar}>
         <p>항목</p>
-        <button>추가하기</button>
+        <button onClick={modalOpenHandler}>추가하기</button>
       </div>
       <div className={styles.main}>
         <ul className={styles.list}>{content}</ul>
