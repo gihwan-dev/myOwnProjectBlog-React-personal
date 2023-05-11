@@ -1,39 +1,54 @@
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../../../../../app/hook";
 import UserItem from "./UserItem";
 import styles from "./UserList.module.css";
+import { userState } from "../../../../../../store/user";
 
-const USER_DUMMY = [
-  {
-    id: 1,
-    name: "김길동",
-    position: "디자이너",
-    isOn: false,
-  },
-  {
-    id: 2,
-    name: "박길동",
-    position: "프론트엔드",
-    isOn: true,
-  },
-  { id: 3, name: "최기환", position: "백엔드", isOn: true },
-  { id: 4, name: "이길동", position: "기획자", isOn: true },
-];
+import { userListActions, userListState } from "../../../../../../store/users";
 
 const UserList = () => {
+  const user_list = useAppSelector((state) => state.userList.userList);
+
+  const dispatch = useAppDispatch();
+
+  const getUserList = async () => {
+    const res = await fetch(
+      `http://localhost:8080/project/userList/${localStorage.getItem(
+        "projectId"
+      )}`
+    );
+    if (res.status !== 200) {
+      window.alert("실패했습니다. 다시 시도해주세요.");
+    }
+    const data = (await res.json()) as userListState;
+    const updatedList = data.userList.map((user) => {
+      return {
+        name: user.name,
+        job: user.job,
+        isLoged: user.isLoged,
+      };
+    });
+    dispatch(userListActions.setUserList({ userList: updatedList }));
+  };
+
+  useEffect(() => {
+    getUserList();
+  }, []);
+
   return (
     <div className={styles.container}>
       <div className={styles.top}>
         <p>Team</p>
-        <button>view all</button>
       </div>
       <ul>
-        {USER_DUMMY.map((item) => {
+        {user_list.map((item, index) => {
           return (
-            <li key={item.id}>
+            <li key={item.name}>
               <UserItem
-                isOn={item.isOn}
-                id={item.id}
+                isOn={item.isLoged}
+                id={index + 1}
                 name={item.name}
-                position={item.position}
+                position={item.job}
               />
             </li>
           );

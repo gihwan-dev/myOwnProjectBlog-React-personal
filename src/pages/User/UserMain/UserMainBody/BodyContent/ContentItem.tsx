@@ -1,7 +1,10 @@
-import { Dialog, LinearProgress } from "@mui/material";
+import { Dialog, IconButton, LinearProgress } from "@mui/material";
 import styles from "./ContenItem.module.css";
 import ContentDetailModal from "./ContentDetailModal/ContentDetailModal";
-import { useState } from "react";
+import { useCallback, useState } from "react";
+import { Delete } from "@mui/icons-material";
+import { totalListActions } from "../../../../../store/todoList";
+import { useAppDispatch } from "../../../../app/hook";
 
 const ContentItem: React.FC<{
   title: string;
@@ -14,12 +17,51 @@ const ContentItem: React.FC<{
 }> = (props) => {
   const [openModal, setOpenModal] = useState(false);
 
+  const dispatch = useAppDispatch();
+
   const onCloseHandler = () => {
     setOpenModal(false);
   };
 
   const onOpenHandler = () => {
     setOpenModal(true);
+  };
+
+  const getList = useCallback(async () => {
+    const _id = localStorage.getItem("projectId");
+    const response = await fetch(
+      `http://localhost:8080/project/totalList/${_id}`
+    );
+    const data = await response.json();
+
+    dispatch(
+      totalListActions.setTotalList({
+        todo: data.todo,
+        doing: data.doing,
+        done: data.done,
+      })
+    );
+  }, []);
+
+  const onDeleteHandler = async () => {
+    console.log("clicked");
+    const res = await fetch(
+      `http://localhost:8080/project/${props.type.toLowerCase()}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          project_id: localStorage.getItem("projectId"),
+          todo_id: props._id,
+        }),
+      }
+    );
+    if (res.status !== 200) {
+      window.alert("삭제에 실패했습니다.");
+    }
+    getList();
   };
 
   return (
@@ -61,6 +103,18 @@ const ContentItem: React.FC<{
           <p>{props.endDate}</p>
         </div>
       </div>
+
+      <IconButton
+        onClick={onDeleteHandler}
+        color="secondary"
+        style={{
+          position: "absolute",
+          left: "calc(100% - 16px)",
+          top: "-30%",
+        }}
+      >
+        <Delete fontSize="large"></Delete>
+      </IconButton>
     </div>
   );
 };

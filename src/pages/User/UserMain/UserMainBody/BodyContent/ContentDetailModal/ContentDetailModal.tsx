@@ -9,12 +9,13 @@ import {
   ToggleButton,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import AddContentDetailModal from "./AddContentDetailModal/AddContentDetailModal";
-import { useAppSelector } from "../../../../../app/hook";
+import { useAppDispatch, useAppSelector } from "../../../../../app/hook";
 
 import styles from "./ContentDetailModal.module.scss";
 import { Check, Delete } from "@mui/icons-material";
+import { totalListActions } from "../../../../../../store/todoList";
 
 const ContentDetailModal: React.FC<{
   title: string;
@@ -29,6 +30,8 @@ const ContentDetailModal: React.FC<{
 
   const projectData = useAppSelector((state) => state.totalList);
 
+  const dispatch = useAppDispatch();
+
   const onOpenHandler = () => {
     setOpenModal(true);
   };
@@ -41,21 +44,89 @@ const ContentDetailModal: React.FC<{
 
   if (props.type === "Todo") {
     const todoData = projectData.todo.find((item) => item._id === props._id);
-    console.log(todoData);
     listContent = todoData?.list;
   }
 
-  if (props.type === "Doint") {
+  if (props.type === "Doing") {
     const todoData = projectData.doing.find((item) => item._id === props._id);
-    console.log(todoData);
     listContent = todoData?.list;
   }
 
   if (props.type === "Done") {
     const todoData = projectData.done.find((item) => item._id === props._id);
-    console.log(todoData);
     listContent = todoData?.list;
   }
+
+  const getList = useCallback(async () => {
+    const _id = localStorage.getItem("projectId");
+    const response = await fetch(
+      `http://localhost:8080/project/totalList/${_id}`
+    );
+    const data = await response.json();
+
+    dispatch(
+      totalListActions.setTotalList({
+        todo: data.todo,
+        doing: data.doing,
+        done: data.done,
+      })
+    );
+  }, []);
+
+  useEffect(() => {
+    getList();
+  }, []);
+
+  const onToggleHandler = async (_id: string, done: boolean) => {
+    try {
+      const res = await fetch(
+        `http://localhost:8080/project/${props.type.toLowerCase()}/list/detail`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            project_id: localStorage.getItem("projectId"),
+            todo_id: props._id,
+            list_id: _id,
+            done: !done,
+          }),
+        }
+      );
+      if (res.status !== 200) {
+        throw new Error("실패했습니다.");
+      }
+    } catch (error) {
+      window.alert("실패했습니다. 다시 시도해주세요.");
+    }
+    getList();
+  };
+
+  const onDeleteHandler = async (_id: string) => {
+    try {
+      const res = await fetch(
+        `http://localhost:8080/project/${props.type.toLowerCase()}/list/detail`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            project_id: localStorage.getItem("projectId"),
+            todo_id: props._id,
+            list_id: _id,
+          }),
+        }
+      );
+      if (res.status !== 200) {
+        throw new Error("실패했습니다.");
+      }
+    } catch (error) {
+      window.alert("실패했습니다. 다시 시도해주세요.");
+    }
+    getList();
+  };
 
   return (
     <div className={styles.container}>
@@ -75,20 +146,33 @@ const ContentDetailModal: React.FC<{
       <Typography variant="h5">
         {props.startDate} ~ {props.endDate}
       </Typography>
-      <List>
+      <List
+        style={{
+          marginTop: "1rem",
+        }}
+      >
         {listContent?.map((item: any) => (
           <ListItem
-            style={{ width: "400px" }}
+            style={{
+              width: "400px",
+              border: "1px solid #ccc",
+              paddingTop: "1rem",
+              paddingBottom: "1rem",
+              marginBottom: "1rem",
+            }}
             key={item.title}
             secondaryAction={
               <>
-                <IconButton aria-lable="about list action">
+                <IconButton
+                  aria-label="about list action"
+                  onClick={() => onDeleteHandler(item._id)}
+                >
                   <Delete color="error" />
                 </IconButton>
                 <ToggleButton
                   value="check"
                   selected={item.done}
-                  onChange={() => {}}
+                  onChange={() => onToggleHandler(item._id, item.done)}
                 >
                   <Check />
                 </ToggleButton>

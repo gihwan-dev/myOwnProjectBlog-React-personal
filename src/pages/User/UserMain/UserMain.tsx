@@ -7,6 +7,7 @@ import SelectUserPage from "./UserMainLogin/SelectUserPage";
 import { useAppSelector, useAppDispatch } from "../../app/hook";
 import { userActions } from "../../../store/user";
 import { useEffect } from "react";
+import { userListActions } from "../../../store/users";
 
 type User = {
   name: string;
@@ -26,10 +27,24 @@ const UserMain = () => {
 
   const dispatch = useAppDispatch();
 
-  const onSelectHandler = (user: User) => {
+  const onSelectHandler = async (user: User) => {
     dispatch(userActions.login(user));
     localStorage.setItem("userName", user.name);
     localStorage.setItem("userJob", user.job);
+    const res = await fetch("http://localhost:8080/project/userList", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        project_id: localStorage.getItem("projectId"),
+        name: user.name,
+        isLoged: true,
+      }),
+    });
+    if (res.status !== 200) {
+      window.alert("실패했습니다. 다시 시도해주세요.");
+    }
   };
 
   useEffect(() => {

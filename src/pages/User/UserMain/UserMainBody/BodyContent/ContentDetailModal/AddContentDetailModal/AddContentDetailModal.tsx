@@ -3,6 +3,8 @@ import { useAppDispatch } from "../../../../../../app/hook";
 
 import { totalListActions } from "../../../../../../../store/todoList";
 
+import styles from "./AddContentDetailModal.module.scss";
+
 const AddContentDetailModal: React.FC<{
   onClose: () => void;
   _id: string;
@@ -71,7 +73,10 @@ const AddContentDetailModal: React.FC<{
   };
 
   return (
-    <form onSubmit={onSubmitHandler}>
+    <form
+      onSubmit={onSubmitHandler}
+      className={styles.form}
+    >
       <label>Title: </label>
       <input
         type="text"
@@ -85,13 +90,15 @@ const AddContentDetailModal: React.FC<{
         onChange={onDescriptionChangeHandler}
       />
 
-      <button
-        type="button"
-        onClick={props.onClose}
-      >
-        취소
-      </button>
-      <button>저장</button>
+      <div className={styles.button}>
+        <button
+          type="button"
+          onClick={props.onClose}
+        >
+          취소
+        </button>
+        <button>저장</button>
+      </div>
     </form>
   );
 };

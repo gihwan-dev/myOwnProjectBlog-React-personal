@@ -1,4 +1,4 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import styles from "./UserMainNavigation.module.css";
 
 import { useAppDispatch } from "../../app/hook";
@@ -7,14 +7,31 @@ import { userActions } from "../../../store/user";
 const UserMainNavigation = () => {
   const dispatch = useAppDispatch();
 
-  const navigate = useNavigate();
-  const titleClickHandler = () => {
+  const onLogoutHandler = async () => {
     dispatch(userActions.logout());
-    navigate("/");
+
+    const res = await fetch("http://localhost:8080/project/userList", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        project_id: localStorage.getItem("projectId"),
+        name: localStorage.getItem("userName"),
+        isLoged: false,
+      }),
+    });
+    if (res.status !== 200) {
+      window.alert("실패했습니다. 다시 시도해주세요.");
+    }
+    localStorage.removeItem("userName");
+    localStorage.removeItem("userJob");
+    localStorage.removeItem("projectId");
   };
+
   return (
     <header className={styles.header}>
-      <h1 onClick={titleClickHandler}>Gihwan-dev</h1>
+      <h1>Gihwan-dev</h1>
       <nav>
         <ul>
           <li>
@@ -46,6 +63,14 @@ const UserMainNavigation = () => {
               }}
             >
               References
+            </NavLink>
+          </li>
+          <li className={styles.logout}>
+            <NavLink
+              to="/"
+              onClick={onLogoutHandler}
+            >
+              Logout
             </NavLink>
           </li>
         </ul>

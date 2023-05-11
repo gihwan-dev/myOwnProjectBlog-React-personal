@@ -5,6 +5,7 @@
   align-items: center;
   height: 10vh;
   border-bottom: 1px solid white;
+  position: relative;
 }
 
 .header nav {
@@ -44,16 +45,24 @@
 
 .header h1 {
   font-size: 2rem;
-}
-
-.header h1:hover {
-  cursor: pointer;
-  transform: scale(1.05);
+  perspective: 1000px;
+  animation: rotate 5s linear infinite;
 }
 
 a.active {
   color: rgba(252, 163, 17, 1);
 }
+
+@keyframes rotate {
+  from {
+    transform: rotateY(0deg);
+  }
+
+  to {
+    transform: rotateY(1turn);
+  }
+}
+
 
 a:hover {
   color: rgba(252, 163, 17, 1);
@@ -69,9 +78,6 @@ a:hover {
   }
 }
 
-.header h1 {
-  animation: fall 2s ease-in-out;
-}
 
 
 @keyframes fall {
@@ -82,4 +88,11 @@ a:hover {
   100% {
     transform: translateY(0px);
   }
+}
+
+.logout {
+  position: absolute;
+  left: 90%;
+  top: 50%;
+  transform: translateY(-50%);
 }
